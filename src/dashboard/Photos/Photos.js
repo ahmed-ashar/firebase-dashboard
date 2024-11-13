@@ -46,6 +46,7 @@ export default function Photos() {
         setPhotos(userPhotos);
       } catch (error) {
         console.error("Error fetching photos:", error);
+        setLoading(false);
       }
     };
 
