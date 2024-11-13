@@ -47,6 +47,7 @@ export default function Albums() {
         setAlbums(userAlbums);
       } catch (error) {
         console.error("Error fetching albums:", error);
+        setLoading(false)
       }
     };
 
