@@ -15,14 +15,14 @@ import { useNavigate } from "react-router-dom";
 export default function Albums() {
   const [loading, setLoading] = useState(true);
   const [albums, setAlbums] = useState([]);
-  const [editMode, setEditMode] = useState(false); // Toggle edit mode
-  const [selectedAlbum, setSelectedAlbum] = useState(null); // Selected album for editing
-  const [newImage, setNewImage] = useState(null); // New image file for album
+  const [editMode, setEditMode] = useState(false); 
+  const [selectedAlbum, setSelectedAlbum] = useState(null); 
+  const [newImage, setNewImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAlbums = async () => {
-      const userId = auth.currentUser?.uid; // Get current user's UID
+      const userId = auth.currentUser?.uid;
       if (!userId) {
         console.log("User not authenticated");
         return;
@@ -35,7 +35,7 @@ export default function Albums() {
 
         if (querySnapshot.empty) {
           console.log("No albums found for the user.");
-          setAlbums([]); // No albums found, clear the array
+          setAlbums([]); 
           return;
         }
 
@@ -57,7 +57,7 @@ export default function Albums() {
   const handleDelete = async (albumId) => {
     try {
       await deleteDoc(doc(db, "albums", albumId));
-      setAlbums(albums.filter((album) => album.id !== albumId)); // Update UI
+      setAlbums(albums.filter((album) => album.id !== albumId)); 
       alert("Album deleted successfully!");
     } catch (error) {
       console.error("Error deleting album:", error);
@@ -68,21 +68,21 @@ export default function Albums() {
   const handleEdit = (album) => {
     setEditMode(true);
     setSelectedAlbum(album);
-    setNewImage(null); // Reset the new image file
+    setNewImage(null); 
   };
 
   const handleSaveEdit = async () => {
     try {
-      let imageUrl = selectedAlbum.image; // Default to the existing image URL
+      let imageUrl = selectedAlbum.image; 
 
-      // Upload new image if a file is selected
+      
       if (newImage) {
         const imageRef = ref(storage, `albums/${newImage.name}`);
         const snapshot = await uploadBytes(imageRef, newImage);
         imageUrl = await getDownloadURL(snapshot.ref);
       }
 
-      // Update the album document in Firestore
+      
       const albumRef = doc(db, "albums", selectedAlbum.id);
       await updateDoc(albumRef, {
         title: selectedAlbum.title,
